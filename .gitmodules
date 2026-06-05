@@ -1,9 +1,9 @@
 [submodule "ext/libigl"]
 	path = ext/libigl
-	url = git@gitlab.cs.washington.edu:knitting-research/external/libigl.git
+	url = git@github.com:merlinyx/libigl.git
 [submodule "ext/libQEx"]
 	path = ext/libQEx
-	url = git@gitlab.cs.washington.edu:knitting-research/external/libqex.git
+	url = git@github.com:merlinyx/libQEx.git
 [submodule "ext/Directional"]
 	path = ext/Directional
-	url = git@gitlab.cs.washington.edu:knitting-research/external/directional.git
+	url = git@github.com:merlinyx/Directional.git
