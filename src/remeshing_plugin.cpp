@@ -384,18 +384,18 @@ void RemeshingMenu::draw_custom_window() {
         mode_selector(Composition::PATCH_QUARTER_IN, patch_quarter_in, "Small flap 4 x +1/4");
         ImGui::SameLine(0, p);
         mode_selector(Composition::PATCH_QUARTER_OUT, patch_quarter_out, "Flat patch 4 x +1/4");
-        if (in_composition_mode) ImGui::Text(composition_instructions[composition].c_str());
+        if (in_composition_mode) ImGui::Text("%s", composition_instructions[composition].c_str());
         if (constrainedRoot) {
             std::string text = "Constrained Global Rotation: \n" + std::to_string(constrainedRootAngle);
-            ImGui::Text(text.c_str());
+            ImGui::Text("%s", text.c_str());
         } else {
             if (ImGui::DragFloat("Global Rotation", &globalRotation, 0.005f, (float)(-M_PI), (float)(M_PI))) {
-                update_raw_field(); viewing_mode == ViewingMode::MESH_TCON; update_visualization();
+                update_raw_field(); viewing_mode = ViewingMode::MESH_TCON; update_visualization();
             }
         }
         ImGui::Checkbox("Should Comb Field", &do_matching);
         if (ImGui::Button("Find Trivial Connection", ImVec2(w - p, 0))) {
-            update_raw_field(); viewing_mode == ViewingMode::MESH_TCON; update_visualization();
+            update_raw_field(); viewing_mode = ViewingMode::MESH_TCON; update_visualization();
         }
     }
 

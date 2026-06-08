@@ -6,8 +6,7 @@
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/AABB_face_graph_triangle_primitive.h>
 #include <CGAL/AABB_tree.h>
-#include <CGAL/AABB_traits.h>
-#include <CGAL/AABB_triangle_primitive.h>
+#include <CGAL/AABB_traits_3.h>
 #include <CGAL/Polyhedron_3.h>
 #include <CGAL/Polyhedron_items_with_id_3.h>                   
 #include <CGAL/Polyhedron_incremental_builder_3.h>
@@ -35,7 +34,7 @@ typedef Polyhedron_3::HalfedgeDS Poly3_HalfedgeDS;
 typedef Polyhedron_3::Halfedge_handle Halfedge_handle;
 
 typedef CGAL::AABB_face_graph_triangle_primitive<Polyhedron_3> Primitive;
-typedef CGAL::AABB_traits<K, Primitive> Traits_poly;
+typedef CGAL::AABB_traits_3<K, Primitive> Traits_poly;
 typedef CGAL::AABB_tree<Traits_poly> Tree;
 typedef Tree::Point_and_primitive_id Point_and_primitive_id;
 

@@ -171,7 +171,7 @@ namespace hlk {
         if (current_tool == MEASURER) {
 
         }
-        ImGui::Text(instructions.c_str());
+        ImGui::Text("%s", instructions.c_str());
 
         if (ImGui::Button("Load Quad Mesh")) {
             load_quad_mesh_file();

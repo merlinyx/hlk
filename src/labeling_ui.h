@@ -73,7 +73,7 @@ namespace hlk {
         bool auto_solve;
 
         // Texture Names - TODO - We probably want a second data structure to hold a database of these
-        std::vector<char*> textures{ "stockinette", "ribbing" };
+        std::vector<const char*> textures{ "stockinette", "ribbing" };
         int current_texture = 0;
 
         // Debug Tooltips On

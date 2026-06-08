@@ -81,8 +81,8 @@ public:
     };
 
     void init(igl::opengl::glfw::Viewer* _viewer, igl::opengl::glfw::imgui::ImGuiPlugin* _plugin) override;
-    void draw_viewer_menu();
-    void draw_custom_window();
+    void draw_viewer_menu() override;
+    void draw_custom_window() override;
     bool load(std::string filename);
     bool save(std::string filename);
     void load_temp_data(std::string filename);
@@ -95,9 +95,9 @@ public:
     void set_input_model(std::string filename) { input_model = filename; }
 
     /////////// CORE UI CALLBACKS ///////////
-    bool mouse_down(int button, int modifier);
-    bool mouse_move(int mouse_x, int mouse_y);
-    bool mouse_up(int button, int modifier);
+    bool mouse_down(int button, int modifier) override;
+    bool mouse_move(int mouse_x, int mouse_y) override;
+    bool mouse_up(int button, int modifier) override;
     bool mouse_scroll(float delta_y);
 
     //////////// UTILITY METHODS ////////////
