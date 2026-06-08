@@ -16,9 +16,11 @@ void Meshing::comb_field_from_connection(
     // combing
     Eigen::VectorXi matching;
     Eigen::VectorXd effort;
-    directional::principal_matching(VMesh, FMesh, EV, EF, FE, rawField, matching, effort);
+    Eigen::VectorXi singVertices;
+    Eigen::VectorXi singIndices;
+    directional::principal_matching(VMesh, FMesh, EV, EF, FE, rawField, matching, effort, singVertices, singIndices);
     directional::combing(VMesh, FMesh, EV, EF, FE, rawField, matching, combedField);
-    directional::principal_matching(VMesh, FMesh, EV, EF, FE, combedField, combedMatching, combedEffort);
+    directional::principal_matching(VMesh, FMesh, EV, EF, FE, combedField, combedMatching, combedEffort, singVertices, singIndices);
 }
 
 void Meshing::cross_field_miq(const Eigen::MatrixXd& X1,

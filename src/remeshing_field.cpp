@@ -462,12 +462,12 @@ void RemeshingMenu::update_raw_field() {
         directional::index_prescription(
             V, F, innerEdges, basisCycles, targetCurvature,
             cycleCurvature, cycleIndices, N, field_guidance_weight,
-            rotationAngles, linf, linfError);
+            rotationAngles, linfError);
     } else {
         directional::index_prescription(
             V, F, innerEdges, basisCycles,
             cycleCurvature, cycleIndices, N,
-            rotationAngles, linf, linfError);
+            rotationAngles, linfError);
     }
     //std::cout << "Index prescription linfError: " << linfError << std::endl;
 
@@ -478,7 +478,9 @@ void RemeshingMenu::update_raw_field() {
         directional::rotation_to_representative(V, F, EV, EF, rotationAngles, N, 0, representative);
         if (do_matching) {
             directional::representative_to_raw(V, F, representative, N, rawField);
-            Meshing::comb_field_from_connection(V, F, EV, EF, FE, rawField, combedField, Eigen::VectorXi(), Eigen::VectorXd());
+            Eigen::VectorXi combedMatching;
+            Eigen::VectorXd combedEffort;
+            Meshing::comb_field_from_connection(V, F, EV, EF, FE, rawField, combedField, combedMatching, combedEffort);
             representative = combedField.block(0, 0, F.rows(), 3);
         }
         int i = cfaces[0].face_id;
@@ -493,7 +495,9 @@ void RemeshingMenu::update_raw_field() {
     directional::rotation_to_representative(V, F, EV, EF, rotationAngles, N, constrainedRoot ? constrainedRootAngle : globalRotation, representative);
     directional::representative_to_raw(V, F, representative, N, rawField);
     if (do_matching) {
-        Meshing::comb_field_from_connection(V, F, EV, EF, FE, rawField, combedField, Eigen::VectorXi(), Eigen::VectorXd());
+        Eigen::VectorXi combedMatching;
+        Eigen::VectorXd combedEffort;
+        Meshing::comb_field_from_connection(V, F, EV, EF, FE, rawField, combedField, combedMatching, combedEffort);
         direction_field[1] = combedField.block(0, 0, F.rows(), 3);
     } else {
         direction_field[1] = representative;

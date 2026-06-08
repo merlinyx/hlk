@@ -110,7 +110,8 @@ namespace hlk {
 
 #include <igl/serialize.h>
 
-SERIALIZE_TYPE(hlk::QuadMesh,
+namespace igl { namespace serialization {
+inline void _serialization(bool s, hlk::QuadMesh& obj, std::vector<char>& buffer) {
     SERIALIZE_MEMBER(V)
     SERIALIZE_MEMBER(F_q)
     SERIALIZE_MEMBER(n)
@@ -134,4 +135,13 @@ SERIALIZE_TYPE(hlk::QuadMesh,
     SERIALIZE_MEMBER(boundary_edges)
     SERIALIZE_MEMBER(boundary_sides)
     SERIALIZE_MEMBER(boundary_quads)
-)
+}
+
+template<> inline void serialize(const hlk::QuadMesh& obj, std::vector<char>& buffer) {
+    _serialization(true, const_cast<hlk::QuadMesh&>(obj), buffer);
+}
+
+template<> inline void deserialize(hlk::QuadMesh& obj, const std::vector<char>& buffer) {
+    _serialization(false, obj, const_cast<std::vector<char>&>(buffer));
+}
+}}

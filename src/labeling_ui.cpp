@@ -1,6 +1,6 @@
 #include "labeling_ui.h"
 
-#include <imgui/imgui.h>
+#include <imgui.h>
 #include <igl/png/readPNG.h>
 #include <igl/unproject_onto_mesh.h>
 

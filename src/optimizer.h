@@ -3,6 +3,7 @@
 #include "z3++.h"
 #include "z3_api.h"
 #include <memory>
+#include <string>
 #include <vector>
 #include <utility>
 #include <fstream>

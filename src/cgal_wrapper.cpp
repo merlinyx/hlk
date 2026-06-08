@@ -451,7 +451,7 @@ Eigen::Vector3d RotationAxis(Eigen::Vector3d p, double angle, Eigen::Vector3d n)
             }
         }
     }
-    return Eigen::Vector3d(outputMatrix[0][0], outputMatrix[0][1], outputMatrix[0][2]);
+    return Eigen::Vector3d(outputMatrix[0][0], outputMatrix[1][0], outputMatrix[2][0]);
 }
 
 void CGAL_Plane_Cutting(const Polyhedron_3 &mesh, const Tree& tree, const Eigen::Vector3d& plane_p,

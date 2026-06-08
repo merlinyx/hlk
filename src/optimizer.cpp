@@ -1,5 +1,7 @@
 #include "optimizer.h"
 
+#include <iostream>
+
 using namespace std;
 using namespace z3;
 

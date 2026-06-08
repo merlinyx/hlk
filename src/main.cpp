@@ -83,18 +83,11 @@ int main(int argc, char* argv[]) {
     if (args.size() == 0) std::cout << "Running in GUI mode.\n";
 
     int mode = 1;
-//    std::cout << 
-//        "Choose an Interface\n"
-//        "1) Remeshing\n"
-//        "2) Labeling\n";
-//
-//#ifdef HAISEN
-//    mode = 1;
-//#else
-//    std::cin >> mode;
-//#endif
 
     igl::opengl::glfw::Viewer viewer;
+    // Attach a menu plugin
+    igl::opengl::glfw::imgui::ImGuiPlugin plugin;
+    viewer.plugins.push_back(&plugin);
     if (mode == 1) {
         RemeshingMenu remeshing_menu(rosy, input_path, output_path);
         std::cout <<
@@ -110,7 +103,7 @@ int main(int argc, char* argv[]) {
             if (!input_model.empty()) {
                 remeshing_menu.set_input_model(input_model);
             }
-            viewer.plugins.push_back(&remeshing_menu);
+            plugin.widgets.push_back(&remeshing_menu);
             viewer.launch();
         } catch (const std::runtime_error & e) {
             std::string error_msg = std::string("Caught a fatal error: ") + std::string(e.what());
@@ -123,7 +116,7 @@ int main(int argc, char* argv[]) {
         }
     } else {
         LabelingUI labelingui;
-        viewer.plugins.push_back(&labelingui);
+        plugin.widgets.push_back(&labelingui);
         viewer.launch();
     }
 

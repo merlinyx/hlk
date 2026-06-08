@@ -17,7 +17,7 @@ namespace hlk {
 class RemeshingMenu : public igl::opengl::glfw::imgui::ImGuiMenu {
 public:
     RemeshingMenu(int nrosy, std::string input_path, std::string output_path) {
-        plugin_name = "Remeshing";
+        name = "Remeshing";
         rosy = nrosy;
         in_path = input_path;
         out_path = output_path;
@@ -80,7 +80,7 @@ public:
         remove(out_path.c_str());
     };
 
-    void init(igl::opengl::glfw::Viewer* _viewer);
+    void init(igl::opengl::glfw::Viewer* _viewer, igl::opengl::glfw::imgui::ImGuiPlugin* _plugin) override;
     void draw_viewer_menu();
     void draw_custom_window();
     bool load(std::string filename);

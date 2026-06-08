@@ -30,13 +30,15 @@
 #include <igl/vertex_triangle_adjacency.h>
 #include <igl/writeOBJ.h>
 
+#include <algorithm>
+
 #include "extract_quad_mesh.h"
 #include "remeshing_plugin.h"
 
 namespace hlk {
 
-void RemeshingMenu::init(igl::opengl::glfw::Viewer* _viewer) {
-    igl::opengl::glfw::imgui::ImGuiMenu::init(_viewer);
+void RemeshingMenu::init(igl::opengl::glfw::Viewer* _viewer, igl::opengl::glfw::imgui::ImGuiPlugin* _plugin) {
+    igl::opengl::glfw::imgui::ImGuiMenu::init(_viewer, _plugin);
 
     _viewer->core().set_rotation_type(igl::opengl::ViewerCore::RotationType::ROTATION_TYPE_TRACKBALL);
     _viewer->core().background_color = Eigen::Vector4f(0.792f, 0.792f, 0.878f, 1.000f);
@@ -148,7 +150,7 @@ void RemeshingMenu::init(igl::opengl::glfw::Viewer* _viewer) {
         window_width = w;
         window_height = h;
         ImGui::SetWindowPos("Remeshing", ImVec2(window_width - 450, 30));
-        ImGui::SetWindowSize("Remeshing", ImVec2(420, max(300, window_height - 200)));
+        ImGui::SetWindowSize("Remeshing", ImVec2(420, std::max(300, window_height - 200)));
         return false;
     };
 
@@ -164,7 +166,7 @@ void RemeshingMenu::init(igl::opengl::glfw::Viewer* _viewer) {
 void RemeshingMenu::draw_viewer_menu() {
     load_textures();
 
-    float w = ImGui::GetContentRegionAvailWidth();
+    float w = ImGui::GetContentRegionAvail().x;
     float p = ImGui::GetStyle().FramePadding.x;
 
     if (ImGui::CollapsingHeader("Workspace", ImGuiTreeNodeFlags_DefaultOpen)) {
@@ -278,8 +280,8 @@ void RemeshingMenu::draw_viewer_menu() {
         make_checkbox("Fill", viewer->data().show_faces);
         make_checkbox("Show overlay", viewer->data().show_overlay);
         make_checkbox("Show overlay depth", viewer->data().show_overlay_depth);
-        ImGui::Checkbox("Show vertex labels", &(viewer->data().show_vertid));
-        ImGui::Checkbox("Show faces labels", &(viewer->data().show_faceid));
+        make_checkbox("Show vertex labels", viewer->data().show_vertex_labels);
+        make_checkbox("Show faces labels", viewer->data().show_face_labels);
     }
 }
 
@@ -288,14 +290,14 @@ void RemeshingMenu::draw_custom_window() {
     if (!model_loaded()) return;
 
     // Define next window position + size
-    ImGui::SetNextWindowPos(ImVec2(window_width - 420, 0), ImGuiSetCond_FirstUseEver);
-    ImGui::SetNextWindowSize(ImVec2(420, max(300, window_height - 100)), ImGuiSetCond_FirstUseEver);
+    ImGui::SetNextWindowPos(ImVec2(window_width - 420, 0), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(420, std::max(300, window_height - 100)), ImGuiCond_FirstUseEver);
     ImGui::Begin(
         "Remeshing", nullptr,
         ImGuiWindowFlags_NoSavedSettings
     );
 
-    float w = ImGui::GetContentRegionAvailWidth();
+    float w = ImGui::GetContentRegionAvail().x;
     float p = ImGui::GetStyle().FramePadding.x;
 
     ImGui::PushItemWidth(100);
@@ -937,8 +939,6 @@ bool RemeshingMenu::mouse_move(int mouse_x, int mouse_y) {
 }
 
 bool RemeshingMenu::mouse_scroll(float delta_y) {
-    if (igl::opengl::glfw::imgui::ImGuiMenu::mouse_scroll(delta_y)) return true;
-
     if (model_loaded()) {
         float x = viewer->core().viewport(2) / 2.0;
         float y = viewer->core().viewport(3) / 2.0;
@@ -2198,7 +2198,8 @@ void RemeshingMenu::update_visualization(unsigned char key) {
             set_mesh_overlays(1, false);
             // singularity mesh
             directional::singularity_spheres(
-                V, F, N, singVertices, singIndices, VSings, FSings, CSings);
+                V, F, N, singVertices, singIndices,
+                directional::default_singularity_colors(N), VSings, FSings, CSings, 1.0);
             viewer->data_list[2].clear();
             viewer->data_list[2].set_mesh(VSings, FSings);
             viewer->data_list[2].set_colors(CSings);

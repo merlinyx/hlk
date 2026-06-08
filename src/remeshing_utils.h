@@ -169,7 +169,8 @@ std::vector<Eigen::Vector3d> UniformSampling(
 
 #include <igl/serialize.h>
 
-SERIALIZE_TYPE(hlk::FaceVector,
+namespace igl { namespace serialization {
+inline void _serialization(bool s, hlk::FaceVector& obj, std::vector<char>& buffer) {
     SERIALIZE_MEMBER(face_id)
     SERIALIZE_MEMBER(is_hard)
     SERIALIZE_MEMBER(assigned)
@@ -177,10 +178,27 @@ SERIALIZE_TYPE(hlk::FaceVector,
     SERIALIZE_MEMBER(base_vector)
     SERIALIZE_MEMBER(center)
     SERIALIZE_MEMBER(normal)
-)
+}
 
-SERIALIZE_TYPE(hlk::SplitEdge,
+template<> inline void serialize(const hlk::FaceVector& obj, std::vector<char>& buffer) {
+    _serialization(true, const_cast<hlk::FaceVector&>(obj), buffer);
+}
+
+template<> inline void deserialize(hlk::FaceVector& obj, const std::vector<char>& buffer) {
+    _serialization(false, obj, const_cast<std::vector<char>&>(buffer));
+}
+
+inline void _serialization(bool s, hlk::SplitEdge& obj, std::vector<char>& buffer) {
     SERIALIZE_MEMBER(index_0)
     SERIALIZE_MEMBER(index_1)
     SERIALIZE_MEMBER(normal)
-)
+}
+
+template<> inline void serialize(const hlk::SplitEdge& obj, std::vector<char>& buffer) {
+    _serialization(true, const_cast<hlk::SplitEdge&>(obj), buffer);
+}
+
+template<> inline void deserialize(hlk::SplitEdge& obj, const std::vector<char>& buffer) {
+    _serialization(false, obj, const_cast<std::vector<char>&>(buffer));
+}
+}}
