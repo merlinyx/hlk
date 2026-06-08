@@ -2,45 +2,29 @@
 
 A coarse-to-fine design tool for machine knitting.
 
+## Prerequisites
 
-## Installing
+### cmake
 
-This project uses submodules for some dependencies so, clone with 
-
-```bash
-git clone --recursive ...
-```
-
-or
-
-```bash
-git clone ...
-cd high-level-knitting
-git submodule init
-git submodule update
-```
+`brew install cmake` for mac
 
 ### Dependencies
-The direct dependencies that must be installed before building are
 
-- libigl
+The external dependencies that are included in the `ext` are:
+
+- libigl (which carries boost, CGAL, and Eigen)
+- Directional
+- libQEx
+- CoMISo (mirror)
+
+Their dependencies are:
+
+- OpenMesh (needed by libQEx)
+
+Our code needs:
+
 - z3
-- OpenMesh
-- CGAL
-  - boost
 - glm
-- Eigen3.3
-
-By default, libigl is expected to live as an external project at the same level
-as the project. Clone libigl, and run cmake generate on it:
-
-```bash
-git clone https://github.com/libigl/libigl.git
-cd libigl
-mkdir build
-cd build
-cmake ..
-```
 
 #### MacOS
 
@@ -49,7 +33,6 @@ We recommend installing the dependencies with [Homebrew](https://brew.sh):
 ```bash
 brew install z3
 brew install open-mesh
-brew install boost
 brew install glm
 ```
 
@@ -80,6 +63,32 @@ compiling".
 #### Linux
 
 Use your distribution's package manager to install z3 and OpenMesh.
+
+## Installing
+
+This project uses submodules for some dependencies so, clone with 
+
+```bash
+git clone --recursive ...
+```
+
+or
+
+```bash
+git clone ...
+cd high-level-knitting
+git submodule init
+git submodule update
+```
+
+## Build
+
+```
+mkdir build
+cd build
+cmake ..
+make
+```
 
 ### Release Mode
 

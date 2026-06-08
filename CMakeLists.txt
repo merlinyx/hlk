@@ -1,35 +1,59 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.16)
 project(hlk)
 
 set(PROJECT_NAME hlk)
 
-set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake
-                      ${CMAKE_CURRENT_SOURCE_DIR}/ext/libQEx/cmake
-                      ${CMAKE_MODULE_PATH})
+list(PREPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${CMAKE_CURRENT_SOURCE_DIR}/ext/libQEx/cmake)
 
+# OLD CMAKE FOR LIBIGL
 # LibIGL options - may neet to use option instead of set
-option(LIBIGL_WITH_PNG "Use PNG" ON)
-option(LIBIGL_WITH_OPENGL "Use OpenGL" ON)
-option(LIBIGL_WITH_OPENGL_GLFW "Use GLFW" ON)
-option(LIBIGL_WITH_OPENGL_GLFW_IMGUI "Use imGUI" ON)
-option(LIBIGL_WITH_COMISO "Use CoMiso" ON)
-option(LIBIGL_WITH_CGAL "Use CGAL" ON)
+# option(LIBIGL_WITH_PNG "Use PNG" ON)
+# option(LIBIGL_WITH_OPENGL "Use OpenGL" ON)
+# option(LIBIGL_WITH_OPENGL_GLFW "Use GLFW" ON)
+# option(LIBIGL_WITH_OPENGL_GLFW_IMGUI "Use imGUI" ON)
+# option(LIBIGL_WITH_COMISO "Use CoMiso" ON)
+# option(LIBIGL_WITH_CGAL "Use CGAL" ON)
 
-# Note - many LIBIGL functions do not work as a static library
-# (for example, igl::copyleft::cgal::wire_mesh), and you have less
-# lee-way when creating matrices (safest to use MatrixXd and MatrixXi
-# rather than explicitly declaring dimensions). Comment this out
-# in case of such problems
-option(LIBIGL_USE_STATIC_LIBRARY "Use libigl as static library" ON)
+# # Note - many LIBIGL functions do not work as a static library
+# # (for example, igl::copyleft::cgal::wire_mesh), and you have less
+# # lee-way when creating matrices (safest to use MatrixXd and MatrixXi
+# # rather than explicitly declaring dimensions). Comment this out
+# # in case of such problems
+# option(LIBIGL_USE_STATIC_LIBRARY "Use libigl as static library" ON)
 
-# Hack for libigl linking: https://github.com/libigl/libigl/issues/1229
-set(MSVC_RUNTIME "dynamic")
+# # Hack for libigl linking: https://github.com/libigl/libigl/issues/1229
+# set(MSVC_RUNTIME "dynamic")
 
-find_package(LIBIGL REQUIRED)
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+# Libigl
+include(libigl)
+
+# Enable the target igl::glfw
+igl_include(glfw)
+# Other modules you could enable
+#igl_include(embree)
+igl_include(imgui)
+igl_include(opengl)
+igl_include(stb)
+#igl_include(predicates)
+#igl_include(xml)
+igl_include(copyleft cgal)
+# igl_include(copyleft comiso)
+igl_include(copyleft core)
+#igl_include(copyleft cork)
+#igl_include(copyleft tetgen)
+#igl_include(restricted matlab)
+#igl_include(restricted mosek)
+#igl_include(restricted triangle)
+
+# find_package(LIBIGL REQUIRED)
+if(NOT TARGET Eigen3::Eigen)
+  find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+endif()
 find_package(Z3 REQUIRED CONFIG)
 
 add_subdirectory(ext/libQEx EXCLUDE_FROM_ALL)
+add_subdirectory(ext/CoMISo EXCLUDE_FROM_ALL)
+add_subdirectory(compat/libigl-comiso)
 target_compile_definitions(QEx PRIVATE _USE_MATH_DEFINES)
 
 # Just grab all C++ files
@@ -41,16 +65,26 @@ add_executable(${PROJECT_NAME} ${SRC_FILES} ${HEADER_FILES} ${DEBUG_FILES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${Z3_CXX_INCLUDE_DIRS} ${QEX_INCLUDE_DIRS} ext/Directional/include)
 
-target_link_libraries(${PROJECT_NAME} 
-	Eigen3::Eigen 
-	CGAL::CGAL
-  igl::cgal
-	igl::core 
-	igl::opengl 
-	igl::opengl_glfw 
-	igl::png
-	igl::opengl_glfw_imgui 
-	igl::comiso
+# Link igl (and the glfw module) to your project
+target_link_libraries(${PROJECT_NAME} PUBLIC 
+  igl::glfw
+  ## Other modules you could link to
+  # igl::embree
+  igl::imgui
+  igl::opengl
+  igl::stb
+  # igl::predicates
+  # igl::xml
+  igl_copyleft::cgal
+  # igl_copyleft::comiso
+  hlk_libigl_comiso_compat
+  igl_copyleft::core
+  # igl_copyleft::cork
+  # igl_copyleft::tetgen
+  # igl_restricted::matlab
+  # igl_restricted::mosek
+  # igl_restricted::triangle
+	Eigen3::Eigen
   ${Z3_LIBRARIES}
 	QEx)
 

@@ -7,3 +7,6 @@
 [submodule "ext/Directional"]
 	path = ext/Directional
 	url = git@github.com:merlinyx/Directional.git
+[submodule "ext/CoMISo"]
+	path = ext/CoMISo
+	url = git@github.com:merlinyx/CoMISo.git
