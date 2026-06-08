@@ -10,7 +10,7 @@
 
 #include <Eigen/Core>
 #include <Eigen/Sparse>
-#include "../../igl_inline.h"
+#include <igl/igl_inline.h>
 
 namespace igl
 {

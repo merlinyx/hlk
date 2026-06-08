@@ -9,12 +9,12 @@
 #include "nrosy.h"
 
 #include "nrosy.h"
-#include "../../triangle_triangle_adjacency.h"
-#include "../../edge_topology.h"
-#include "../../per_face_normals.h"
+#include <igl/triangle_triangle_adjacency.h>
+#include <igl/edge_topology.h>
+#include <igl/per_face_normals.h>
 
 #include <stdexcept>
-#include "../../PI.h"
+#include <igl/PI.h>
 
 #include <Eigen/Geometry>
 #include <Eigen/Sparse>

@@ -7,40 +7,40 @@
 // obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "miq.h"
-#include "../../local_basis.h"
-#include "../../triangle_triangle_adjacency.h"
-#include "../../cut_mesh.h"
-#include "../../LinSpaced.h"
+#include <igl/local_basis.h>
+#include <igl/triangle_triangle_adjacency.h>
+#include <igl/cut_mesh.h>
+#include <igl/LinSpaced.h>
 
 // includes for VertexIndexing
-#include "../../HalfEdgeIterator.h"
-#include "../../is_border_vertex.h"
-#include "../../vertex_triangle_adjacency.h"
+#include <igl/HalfEdgeIterator.h>
+#include <igl/is_border_vertex.h>
+#include <igl/vertex_triangle_adjacency.h>
 
 // includes for PoissonSolver
-#include "../../slice_into.h"
-#include "../../grad.h"
-#include "../../cotmatrix.h"
-#include "../../doublearea.h"
+#include <igl/slice_into.h>
+#include <igl/grad.h>
+#include <igl/cotmatrix.h>
+#include <igl/doublearea.h>
 #include <gmm/gmm.h>
 #include <CoMISo/Solver/ConstrainedSolver.hh>
 #include <CoMISo/Solver/MISolver.hh>
 #include <CoMISo/Solver/GMM_Tools.hh>
 
 //
-#include "igl/cross_field_mismatch.h"
-#include "../../comb_frame_field.h"
-#include "../../comb_cross_field.h"
-#include "../../cut_mesh_from_singularities.h"
-#include "../../find_cross_field_singularities.h"
-#include "../../compute_frame_field_bisectors.h"
-#include "../../rotate_vectors.h"
+#include <igl/cross_field_mismatch.h>
+#include <igl/comb_frame_field.h>
+#include <igl/comb_cross_field.h>
+#include <igl/cut_mesh_from_singularities.h>
+#include <igl/find_cross_field_singularities.h>
+#include <igl/compute_frame_field_bisectors.h>
+#include <igl/rotate_vectors.h>
 
 #ifndef NDEBUG
 #include <fstream>
 #endif
 #include <iostream>
-#include "../../matlab_format.h"
+#include <igl/matlab_format.h>
 
 #define DEBUGPRINT 0
 

@@ -54,6 +54,7 @@ find_package(Z3 REQUIRED CONFIG)
 add_subdirectory(ext/libQEx EXCLUDE_FROM_ALL)
 add_subdirectory(ext/CoMISo EXCLUDE_FROM_ALL)
 add_subdirectory(compat/libigl-comiso)
+add_subdirectory(compat/libigl-png)
 target_compile_definitions(QEx PRIVATE _USE_MATH_DEFINES)
 
 # Just grab all C++ files
@@ -73,6 +74,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
   igl::imgui
   igl::opengl
   igl::stb
+  hlk_libigl_png_compat
   # igl::predicates
   # igl::xml
   igl_copyleft::cgal
